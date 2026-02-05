@@ -19,9 +19,5 @@ var api = builder.AddProject<WolverineIssue>("api")
     .WithReference(coreDb)
     .WithExternalHttpEndpoints();
 
-var worker = builder.AddProject<WolverineIssue_Worker>("worker")
-    .WaitFor(postgres)
-    .WithReference(coreDb)
-    .WithExternalHttpEndpoints();
 
 builder.Build().Run();

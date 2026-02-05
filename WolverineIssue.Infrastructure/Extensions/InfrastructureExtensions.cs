@@ -51,7 +51,6 @@ public static class InfrastructureExtensions
             opts.Policies.UseDurableLocalQueues();
             
             opts.Discovery.IncludeType<MessageEventConsumer>();
-            opts.Discovery.IncludeType<AnotherMessageEventConsumer>();
         });
 
         return builder;

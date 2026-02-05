@@ -1,9 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Wolverine;
-using Wolverine.EntityFrameworkCore;
 using WolverineIssue;
-using WolverineIssue.Infrastructure.Consumers;
-using WolverineIssue.Infrastructure.Data;
 using WolverineIssue.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +36,7 @@ app.UseHttpsRedirection();
 // Redirect root to Swagger UI for Aspire
 app.MapGet("/", () => Results.Redirect("/swagger"))
     .ExcludeFromDescription();
+
 
 // Add endpoint to publish a message
 app.MapPost("/publish", async (PublishRepo repo) =>

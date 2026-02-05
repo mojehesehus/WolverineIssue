@@ -23,11 +23,7 @@ public class PublishRepo(
 
             try
             {
-                await bus.PublishAsync(new InitiateTaskEvent
-                {
-                    EntityTaskExecutionId = new EntityTaskExecutionId(1),
-                    SegmentationId = new SegmentationId(1)
-                });
+                await bus.PublishAsync(new InitiateTaskEvent("test"));
 
                 await context.SaveChangesAsync();
                 

@@ -13,7 +13,7 @@ public class MessageEventConsumer
 
     public void Handle(InitiateTaskEvent message)
     {
-        _logger.LogError("Received message from Wolverine: {Message}", message.EntityTaskExecutionId.Value);
-        _logger.LogError("Received message from Wolverine: {Message}", message.SegmentationId?.Value);
+        _logger.LogError("Received message from Wolverine: {Message}", message.Value);
+        _logger.LogError("Received message from Wolverine: {Message}", message.Value);
     }
 }
