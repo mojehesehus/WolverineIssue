@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolverineIssue.AppHost", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolverineIssue.ServiceDefaults", "WolverineIssue.ServiceDefaults\WolverineIssue.ServiceDefaults.csproj", "{ADFC423E-EB7A-4261-A6D5-71CDBBC49D1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolverineIssue.Infrastructure", "WolverineIssue.Infrastructure\WolverineIssue.Infrastructure.csproj", "{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,18 @@ Global
 		{ADFC423E-EB7A-4261-A6D5-71CDBBC49D1B}.Release|x64.Build.0 = Release|Any CPU
 		{ADFC423E-EB7A-4261-A6D5-71CDBBC49D1B}.Release|x86.ActiveCfg = Release|Any CPU
 		{ADFC423E-EB7A-4261-A6D5-71CDBBC49D1B}.Release|x86.Build.0 = Release|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Debug|x64.Build.0 = Debug|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Debug|x86.Build.0 = Debug|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Release|x64.ActiveCfg = Release|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Release|x64.Build.0 = Release|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Release|x86.ActiveCfg = Release|Any CPU
+		{7AC3EBE3-FF32-40AE-B28D-CC15F41B96AF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

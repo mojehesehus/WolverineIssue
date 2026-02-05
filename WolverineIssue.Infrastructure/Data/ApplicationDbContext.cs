@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Wolverine.EntityFrameworkCore;
 
-namespace WolverineIssue.Data;
+namespace WolverineIssue.Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext
 {

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace WolverineIssue.Data;
+namespace WolverineIssue.Infrastructure.Data;
 
 public class CoreDbContextFactory
 {

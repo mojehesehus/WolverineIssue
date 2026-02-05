@@ -1,12 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
-using Wolverine.Postgresql;
-using WolverineIssue.Data;
 using WolverineIssue.Events;
+using WolverineIssue.Infrastructure.Data;
+using WolverineIssue.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -16,49 +15,17 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add PostgreSQL with EF Core
-builder.AddNpgsqlDbContext<ApplicationDbContext>("database");
-
-builder.Services.AddDbContextFactory<ApplicationDbContext>(
-    optionsAction: options => { options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); });
-
-builder.Services.AddSingleton<CoreDbContextFactory>();
-
-var connectionString = builder.Configuration.GetConnectionString("database");
-
-// Add Wolverine with EF Core durable messaging
-builder.UseWolverine(opts =>
+// Add Infrastructure (EF Core + Wolverine)
+builder.AddInfrastructure(configureWolverine: opts =>
 {
-    // Use EF Core for durable inbox/outbox
-    opts.Durability.ScheduledJobPollingTime = TimeSpan.FromMilliseconds(100); // Default is 5 seconds
-    opts.Durability.ScheduledJobFirstExecution = TimeSpan.FromMilliseconds(100);
-
-    //For PostgreSQL, you can enable PostgreSQL backed partitioning for the inbox table as an optimization.
-    //This is not enabled by default just to avoid causing database migrations in a minor point release.
-    //Note that this will have some significant benefits for inbox/outbox metrics gathering in the future:
-    opts.Durability.EnableInboxPartitioning = true;
-
-    opts.PersistMessagesWithPostgresql(connectionString: connectionString!)
-        .EnableMessageTransport();
-
-    opts.Services.AddDbContextWithWolverineIntegration<ApplicationDbContext>(x => { x.UseNpgsql(connectionString); });
-
-    // Persist outbox/inbox in EF Core
-    opts.UseEntityFrameworkCoreTransactions();
-    opts.Policies.UseDurableLocalQueues();
-
-    // Discover message handlers
+    // Discover message handlers in the API project
     opts.Discovery.IncludeAssembly(typeof(Program).Assembly);
 });
 
 var app = builder.Build();
 
 // Apply migrations on startup
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await dbContext.Database.MigrateAsync();
-}
+await app.ApplyMigrationsAsync();
 
 app.MapOpenApi();
 app.UseSwagger();
@@ -77,7 +44,8 @@ app.MapGet("/", () => Results.Redirect("/swagger"))
 // Add endpoint to publish a message
 app.MapPost("/publish", async (IDbContextOutbox bus,
         CoreDbContextFactory factory,
-        string message) =>
+        long entityTaskExecutionId,
+        byte segmentationId) =>
     {
         await using var context = await factory.CreateWithTrackingAsync();
 
@@ -91,7 +59,11 @@ app.MapPost("/publish", async (IDbContextOutbox bus,
 
             try
             {
-                await bus.PublishAsync(new MessageEvent(message));
+                await bus.PublishAsync(new InitiateTaskEvent
+                {
+                    EntityTaskExecutionId = new EntityTaskExecutionId(entityTaskExecutionId),
+                    SegmentationId = new SegmentationId(segmentationId)
+                });
 
                 await context.SaveChangesAsync();
                 
@@ -106,13 +78,8 @@ app.MapPost("/publish", async (IDbContextOutbox bus,
             }
         });
         
-        return Results.Ok(new { Status = "Message published", Message = message });
+        return Results.Ok(new { Status = "Message published" });
     })
     .WithName("PublishMessage");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
