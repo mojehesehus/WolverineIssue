@@ -9,4 +9,4 @@ opts.Durability.OutboxStaleTime = x.Seconds();
 
 opts.Durability.InboxStaleTime = x.Seconds();
 
-You can find the code in program on line 42-50.
+You can find the code in WolverineIssue.Program on line 42-50.
