@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.Postgresql;
+using WolverineIssue.Infrastructure.Consumers;
 using WolverineIssue.Infrastructure.Data;
 
 namespace WolverineIssue.Infrastructure.Extensions;
@@ -17,8 +18,7 @@ public static class InfrastructureExtensions
     /// </summary>
     public static IHostApplicationBuilder AddInfrastructure(
         this IHostApplicationBuilder builder, 
-        string connectionStringName = "database",
-        Action<WolverineOptions>? configureWolverine = null)
+        string connectionStringName = "database")
     {
         // Add PostgreSQL with EF Core
         builder.AddNpgsqlDbContext<ApplicationDbContext>(connectionStringName);
@@ -49,9 +49,9 @@ public static class InfrastructureExtensions
             // Persist outbox/inbox in EF Core
             opts.UseEntityFrameworkCoreTransactions();
             opts.Policies.UseDurableLocalQueues();
-
-            // Allow additional configuration
-            configureWolverine?.Invoke(opts);
+            
+            opts.Discovery.IncludeType<MessageEventConsumer>();
+            opts.Discovery.IncludeType<AnotherMessageEventConsumer>();
         });
 
         return builder;

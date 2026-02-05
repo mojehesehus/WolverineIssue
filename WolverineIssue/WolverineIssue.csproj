@@ -22,4 +22,8 @@
       <ProjectReference Include="..\WolverineIssue.Infrastructure\WolverineIssue.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Events\" />
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
-using WolverineIssue.Events;
+using Microsoft.Extensions.Logging;
 
-namespace WolverineIssue.Consumers;
+namespace WolverineIssue.Infrastructure.Consumers;
 
 public class MessageEventConsumer
 {

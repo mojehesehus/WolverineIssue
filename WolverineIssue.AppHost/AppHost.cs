@@ -13,7 +13,13 @@ var postgres = builder.AddPostgres(
     .WithDataVolume();
 
 var coreDb = postgres.AddDatabase("database");
+
 var api = builder.AddProject<WolverineIssue>("api")
+    .WaitFor(postgres)
+    .WithReference(coreDb)
+    .WithExternalHttpEndpoints();
+
+var worker = builder.AddProject<WolverineIssue_Worker>("worker")
     .WaitFor(postgres)
     .WithReference(coreDb)
     .WithExternalHttpEndpoints();

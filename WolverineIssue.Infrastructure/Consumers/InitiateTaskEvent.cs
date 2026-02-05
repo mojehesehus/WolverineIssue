@@ -1,12 +1,15 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace WolverineIssue.Events;
+namespace WolverineIssue.Infrastructure.Consumers;
 
 public class InitiateTaskEvent
 {
     public required EntityTaskExecutionId EntityTaskExecutionId { get; init; }
     public SegmentationId? SegmentationId { get; init; }
 }
+public record TaskCompleteEvent(TaskEventAwaiterInformation TaskEventAwaiterInformation);
+
+public readonly record struct TaskEventAwaiterInformation(EntityTaskExecutionId ExecutionId, string TargetWorkflowId);
 
 
 public readonly record struct EntityTaskExecutionId(long Value) : IParsable<EntityTaskExecutionId>
